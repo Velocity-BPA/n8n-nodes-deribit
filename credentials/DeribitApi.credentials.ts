@@ -53,6 +53,16 @@ export class DeribitApi implements ICredentialType {
       required: true,
       description: 'Your Deribit API Client Secret',
     },
+    {
+      displayName: 'API Key',
+      name: 'apiKey',
+      type: 'string',
+      typeOptions: {
+        password: true,
+      },
+      default: '',
+      description: 'API access token (if pre-authenticated)',
+    },
   ];
 
   authenticate: IAuthenticateGeneric = {
