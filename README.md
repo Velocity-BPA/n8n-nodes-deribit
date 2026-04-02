@@ -8,25 +8,25 @@
 >
 > For licensing information, visit https://velobpa.com/licensing or contact licensing@velobpa.com.
 
-A comprehensive n8n community node for **Deribit**, the world's largest cryptocurrency options and derivatives exchange. This node provides full access to Deribit's REST API v2 for trading options, perpetual futures, and futures contracts with up to 50x leverage.
+An n8n community node for integrating with Deribit's cryptocurrency derivatives exchange. This node provides access to 6 core resources including authentication, instruments, orders, positions, wallet operations, and real-time market data, enabling automated trading strategies and portfolio management workflows.
 
-![n8n Version](https://img.shields.io/badge/n8n-community--node-orange)
-![Node Version](https://img.shields.io/badge/version-1.0.0-blue)
+![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-blue)
 ![License](https://img.shields.io/badge/license-BSL--1.1-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+![Deribit API](https://img.shields.io/badge/Deribit-API%20v2-orange)
+![Crypto Trading](https://img.shields.io/badge/Crypto-Trading-gold)
+![WebSocket](https://img.shields.io/badge/WebSocket-Supported-green)
 
 ## Features
 
-- **Complete Trading Operations**: Place market, limit, stop-limit, and stop-market orders
-- **Options Trading**: Full support for BTC and ETH options with Greeks data
-- **Perpetual Futures**: Trade perpetual contracts with up to 50x leverage
-- **Portfolio Management**: Monitor positions, margins, and account balances
-- **Market Data**: Access real-time order books, tickers, trades, and OHLCV data
-- **Block Trading**: Execute and verify block trades for institutional volumes
-- **Wallet Management**: Handle deposits, withdrawals, and internal transfers
-- **Testnet Support**: Safe testing environment with testnet API
-- **Polling Triggers**: React to order fills, position changes, settlements, and more
-- **OAuth 2.0 Authentication**: Secure API access with automatic token refresh
+- **Complete Trading Operations** - Execute buy/sell orders, modify positions, and manage your trading portfolio
+- **Real-time Market Data** - Access live prices, order books, trade history, and market statistics
+- **Portfolio Management** - Monitor positions, calculate P&L, and track wallet balances across currencies
+- **Advanced Order Types** - Support for limit, market, stop-loss, and conditional orders
+- **Instrument Discovery** - Query available trading pairs, contract specifications, and expiration dates
+- **Risk Management** - Built-in position sizing, margin calculations, and exposure monitoring
+- **WebSocket Integration** - Real-time streaming data for price feeds and order updates
+- **Multi-Currency Support** - Handle Bitcoin, Ethereum, and other supported cryptocurrencies
 
 ## Installation
 
@@ -34,301 +34,161 @@ A comprehensive n8n community node for **Deribit**, the world's largest cryptocu
 
 1. Open n8n
 2. Go to **Settings** → **Community Nodes**
-3. Click **Install**
+3. Click **Install a community node**
 4. Enter `n8n-nodes-deribit`
 5. Click **Install**
 
 ### Manual Installation
 
 ```bash
-# Navigate to your n8n installation
 cd ~/.n8n
-
-# Install the package
 npm install n8n-nodes-deribit
-
-# Restart n8n
 ```
 
 ### Development Installation
 
 ```bash
-# Clone and build
 git clone https://github.com/Velocity-BPA/n8n-nodes-deribit.git
 cd n8n-nodes-deribit
 npm install
 npm run build
-
-# Link to n8n
 mkdir -p ~/.n8n/custom
 ln -s $(pwd) ~/.n8n/custom/n8n-nodes-deribit
-
-# Restart n8n
+n8n start
 ```
 
 ## Credentials Setup
 
-| Field | Description |
-|-------|-------------|
-| **Client ID** | Your Deribit API client ID |
-| **Client Secret** | Your Deribit API client secret |
-| **Environment** | Production or Testnet |
-
-### Getting API Credentials
-
-1. Log in to your Deribit account
-2. Navigate to **Account** → **API**
-3. Click **Add New Key**
-4. Set appropriate permissions (read, trade, wallet)
-5. Copy the Client ID and Client Secret
-
-> **Note**: Use testnet credentials for development. Get testnet credentials at https://test.deribit.com
+| Field | Description | Required |
+|-------|-------------|----------|
+| Client ID | Your Deribit API client identifier | Yes |
+| Client Secret | Your Deribit API client secret key | Yes |
+| Environment | Production or Test environment | Yes |
+| Scope | API permissions (read, trade, wallet) | Yes |
 
 ## Resources & Operations
 
-### Authentication
+### 1. Authentication
+
 | Operation | Description |
 |-----------|-------------|
-| `auth` | Get access token using client credentials |
-| `refreshToken` | Refresh access token |
-| `logout` | Invalidate token |
-| `forkToken` | Clone session token for multiple connections |
+| Get Access Token | Generate OAuth2 access token for API authentication |
+| Refresh Token | Refresh expired access token using refresh token |
+| Logout | Invalidate current session and revoke access token |
+| Get Time | Retrieve server timestamp for synchronization |
 
-### Account
+### 2. Instruments
+
 | Operation | Description |
 |-----------|-------------|
-| `getAccountSummary` | Get account summary by currency |
-| `getPositions` | Get all positions for currency |
-| `getPosition` | Get position for specific instrument |
-| `getSubaccounts` | List subaccounts |
-| `createSubaccount` | Create new subaccount |
-| `changeSubaccountName` | Rename subaccount |
-| `getTransactionLog` | Get transaction history |
-| `getAnnouncements` | Get platform announcements |
+| Get Instruments | List all available trading instruments |
+| Get Instrument | Get detailed information about specific instrument |
+| Get Currencies | Retrieve supported currencies and their properties |
+| Get Index Price | Get current index price for underlying assets |
+| Get Mark Price | Retrieve mark price used for margin calculations |
 
-### Trading
+### 3. Orders
+
 | Operation | Description |
 |-----------|-------------|
-| `buy` | Place buy order |
-| `sell` | Place sell order |
-| `edit` | Modify existing order |
-| `cancel` | Cancel order by ID |
-| `cancelAll` | Cancel all orders |
-| `cancelAllByCurrency` | Cancel all by currency |
-| `cancelAllByInstrument` | Cancel all by instrument |
-| `cancelByLabel` | Cancel orders by label |
-| `closePosition` | Close position for instrument |
-| `getMargins` | Calculate margin for order |
-| `getOpenOrders` | Get open orders |
-| `getOpenOrdersByCurrency` | Get open orders by currency |
-| `getOpenOrdersByInstrument` | Get open orders by instrument |
-| `getOrderHistory` | Get order history |
-| `getOrderState` | Get order status |
-| `getUserTradesByCurrency` | Get trades by currency |
-| `getUserTradesByInstrument` | Get trades by instrument |
-| `getUserTradesByOrder` | Get trades by order |
+| Buy | Place a buy order with specified parameters |
+| Sell | Place a sell order with specified parameters |
+| Edit | Modify existing order price, quantity, or parameters |
+| Cancel | Cancel single order by order ID |
+| Cancel All | Cancel all open orders for instrument or account |
+| Get Order State | Retrieve current status and details of specific order |
+| Get Open Orders | List all currently open orders |
+| Get Order History | Get historical order data with filtering options |
 
-### Market Data
+### 4. Positions
+
 | Operation | Description |
 |-----------|-------------|
-| `getBookSummaryByCurrency` | Get order book summary |
-| `getBookSummaryByInstrument` | Get book for instrument |
-| `getContractSize` | Get contract size |
-| `getCurrencies` | Get supported currencies |
-| `getDeliveryPrices` | Get delivery prices |
-| `getFundingChartData` | Get funding rate chart |
-| `getFundingRateHistory` | Get funding rate history |
-| `getFundingRateValue` | Get current funding rate |
-| `getHistoricalVolatility` | Get historical volatility |
-| `getIndexPrice` | Get index price |
-| `getIndexPriceNames` | Get index names |
-| `getInstrument` | Get instrument details |
-| `getInstruments` | Get all instruments |
-| `getLastSettlementsByCurrency` | Get settlements |
-| `getLastTradesByCurrency` | Get recent trades |
-| `getLastTradesByInstrument` | Get trades for instrument |
-| `getMarkPriceHistory` | Get mark price history |
-| `getOrderBook` | Get order book |
-| `getTicker` | Get ticker for instrument |
-| `getTradingviewChartData` | Get OHLCV data |
-| `getVolatilityIndexData` | Get volatility index |
+| Get Positions | Retrieve all current positions |
+| Get Position | Get detailed information about specific position |
+| Change Position | Modify position size or close position |
+| Get New Announcements | Get position-related announcements and updates |
 
-### Options
+### 5. Wallet
+
 | Operation | Description |
 |-----------|-------------|
-| `getOptionMarkPrices` | Get option mark prices |
-| `getOptionSummary` | Get option summary data |
+| Get Account Summary | Retrieve complete account balance and summary |
+| Get Subaccounts | List all subaccounts and their details |
+| Create Subaccount | Create new subaccount with specified name |
+| Get Deposits | Retrieve deposit history and pending deposits |
+| Get Withdrawals | Get withdrawal history and status |
+| Withdraw | Initiate cryptocurrency withdrawal |
+| Get Transfer | Get internal transfer details |
+| Submit Transfer | Execute transfer between accounts |
 
-### Portfolio
+### 6. MarketData
+
 | Operation | Description |
 |-----------|-------------|
-| `getPortfolioMargins` | Get portfolio margin info |
-| `simulatePortfolio` | Simulate portfolio changes |
-
-### Wallet
-| Operation | Description |
-|-----------|-------------|
-| `getDeposits` | Get deposit history |
-| `getWithdrawals` | Get withdrawal history |
-| `withdraw` | Request withdrawal |
-| `cancelWithdrawal` | Cancel pending withdrawal |
-| `getTransfers` | Get internal transfers |
-| `createTransfer` | Transfer between accounts |
-
-### Block Trade
-| Operation | Description |
-|-----------|-------------|
-| `getBlockTrades` | Get block trade history |
-| `executeBlockTrade` | Execute block trade |
-| `verifyBlockTrade` | Verify block trade |
-| `invalidateBlockTradeSignature` | Invalidate signature |
-
-### Combo
-| Operation | Description |
-|-----------|-------------|
-| `getCombos` | Get combo instruments |
-| `createCombo` | Create combo order |
-
-### Public
-| Operation | Description |
-|-----------|-------------|
-| `getTime` | Get server time |
-| `test` | Test API connectivity |
-| `status` | Get exchange status |
-
-## Trigger Node
-
-The **Deribit Trigger** node provides poll-based triggers for trading events:
-
-| Trigger | Description |
-|---------|-------------|
-| `newOrder` | Fires when a new order is placed |
-| `orderFilled` | Fires when an order is executed |
-| `orderCanceled` | Fires when an order is canceled |
-| `positionChanged` | Fires when a position is updated |
-| `priceAlert` | Fires when price crosses a threshold |
-| `settlementOccurred` | Fires on settlement events |
-| `fundingRateChanged` | Fires when funding rate updates |
+| Get Order Book | Retrieve current order book for specified instrument |
+| Get Last Trades | Get recent trade history for instrument |
+| Get Trade Volumes | Retrieve trading volume statistics |
+| Get Ticker | Get ticker information including prices and volume |
+| Get Historical Volatility | Retrieve historical volatility data |
+| Get Funding Chart Data | Get funding rate chart data for perpetuals |
+| Get Volatility Index | Retrieve volatility index values |
 
 ## Usage Examples
 
-### Place a Limit Order
-
 ```javascript
-// Buy 0.1 BTC perpetual at $50,000
+// Place a buy order for Bitcoin perpetual
 {
-  "resource": "trading",
-  "operation": "buy",
-  "instrumentName": "BTC-PERPETUAL",
-  "amount": 0.1,
+  "instrument_name": "BTC-PERPETUAL",
+  "amount": 10,
   "type": "limit",
-  "price": 50000,
-  "timeInForce": "good_til_cancelled"
+  "price": 45000,
+  "label": "my_order_001"
 }
 ```
 
-### Get Option Chain
-
 ```javascript
-// Get all BTC options expiring in June
+// Get current positions
 {
-  "resource": "marketData",
-  "operation": "getInstruments",
   "currency": "BTC",
-  "kind": "option",
-  "expired": false
+  "kind": "future"
 }
 ```
 
-### Monitor Portfolio
+```javascript
+// Retrieve order book data
+{
+  "instrument_name": "ETH-PERPETUAL",
+  "depth": 20
+}
+```
 
 ```javascript
-// Get current BTC positions and margins
+// Check account balance
 {
-  "resource": "account",
-  "operation": "getAccountSummary",
   "currency": "BTC",
   "extended": true
 }
 ```
 
-## Deribit Concepts
-
-### Instrument Names
-
-| Format | Example | Description |
-|--------|---------|-------------|
-| Perpetual | `BTC-PERPETUAL` | Perpetual futures contract |
-| Future | `BTC-28JUN24` | Futures expiring June 28, 2024 |
-| Option | `BTC-28JUN24-50000-C` | Call option, $50K strike, June expiry |
-
-### Order Types
-
-| Type | Description |
-|------|-------------|
-| `limit` | Executes at specified price or better |
-| `market` | Executes immediately at market price |
-| `stop_limit` | Limit order triggered at stop price |
-| `stop_market` | Market order triggered at stop price |
-
-### Time in Force
-
-| Option | Description |
-|--------|-------------|
-| `good_til_cancelled` | Remains until filled or cancelled |
-| `fill_or_kill` | Fill entire order immediately or cancel |
-| `immediate_or_cancel` | Fill what's possible immediately |
-
-## Networks
-
-| Network | API URL | Description |
-|---------|---------|-------------|
-| Production | `https://www.deribit.com/api/v2` | Live trading |
-| Testnet | `https://test.deribit.com/api/v2` | Paper trading |
-
 ## Error Handling
 
-The node handles Deribit API errors with descriptive messages:
-
-| Code | Description |
-|------|-------------|
-| `10000` | Authorization required |
-| `10001` | Not enough balance |
-| `10009` | Rate limit exceeded |
-| `10028` | Invalid order parameters |
-| `11044` | Order not found |
-| `11050` | Invalid instrument |
-
-## Security Best Practices
-
-1. **Use testnet first**: Test all workflows on testnet before production
-2. **Limit API permissions**: Only grant necessary permissions to API keys
-3. **Use IP whitelisting**: Restrict API access to known IPs
-4. **Store credentials securely**: Use n8n's credential encryption
-5. **Monitor activity**: Review API activity regularly in Deribit dashboard
+| Error | Description | Solution |
+|-------|-------------|----------|
+| 10009 | Invalid API key or signature | Verify credentials and check client ID/secret |
+| 10011 | Invalid instrument name | Use Get Instruments to verify available trading pairs |
+| 10012 | Insufficient funds | Check account balance before placing orders |
+| 11029 | Order not found | Verify order ID exists and belongs to your account |
+| 11035 | Position not found | Check if position exists for specified instrument |
+| 13004 | Price too high/low | Adjust price within allowed trading range |
 
 ## Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Build
 npm run build
-
-# Run tests
 npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Lint
 npm run lint
-
-# Fix lint issues
-npm run lint:fix
-
-# Watch mode
 npm run dev
 ```
 
@@ -354,25 +214,16 @@ See [LICENSE](LICENSE), [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md), and [LIC
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Contributions are welcome! Please ensure:
 
-Please ensure:
-- All tests pass (`npm test`)
-- Code is linted (`npm run lint`)
-- Documentation is updated
+1. Code follows existing style conventions
+2. All tests pass (`npm test`)
+3. Linting passes (`npm run lint`)
+4. Documentation is updated for new features
+5. Commit messages are descriptive
 
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/Velocity-BPA/n8n-nodes-deribit/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Velocity-BPA/n8n-nodes-deribit/discussions)
-- **Deribit API Docs**: [docs.deribit.com](https://docs.deribit.com)
-
-## Acknowledgments
-
-- [Deribit](https://www.deribit.com) for their comprehensive API
-- [n8n](https://n8n.io) for the automation platform
-- [Velocity BPA](https://velobpa.com) for development and maintenance
+- **Deribit API Documentation**: [docs.deribit.com](https://docs.deribit.com)
+- **Deribit Community**: [Deribit Community Forum](https://www.deribit.com/main#/community)
