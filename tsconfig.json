@@ -1,43 +1,33 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
-    "module": "CommonJS",
-    "lib": ["ES2021"],
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "target": "es2019",
+    "module": "commonjs",
+    "lib": ["es2019"],
     "outDir": "./dist",
     "rootDir": "./",
+    "removeComments": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "credentials/**/*.ts",
-    "nodes/**/*.ts",
-    "index.ts"
+    "credentials/**/*",
+    "nodes/**/*"
   ],
   "exclude": [
-    "node_modules",
     "dist",
-    "test"
+    "node_modules",
+    "**/*.js"
   ]
 }
